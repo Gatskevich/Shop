@@ -1,0 +1,35 @@
+{% load static %}
+
+<html>
+<head>
+    <meta charset ="UTF-8">
+    <title>{% block title %}My shop{% endblock %}</title>
+    <link rel ="stylesheet" href="{% static 'css/bootstrap.min.css'%}"  type ="text/css">
+</head>
+<body>
+
+<div  id="header">
+     <a  href="/" class="btn btn-success btn-lg">My shop</a>
+     <a style="margin-top:0px;padding-left:1300px;" href="{% url 'users:register' %}" class = "btn btn-primary btn-lg">Enter</a>
+</div>
+<div id="subheader">
+   <div  style="margin-top:0px;padding-left:1300px;">
+    {% with total_items=cart|length %}
+        {% if cart|length > 0 %}
+            Basket:
+            <a href="{% url 'shop:cart_detail' %}">
+                {{ total_items }} item{{ total_items|pluralize }},
+                ${{ cart.get_total_price }}
+            </a>
+        {% else %}
+            Basket is empty.
+        {% endif %}
+    {% endwith %}
+    </div>
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

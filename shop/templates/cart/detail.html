@@ -1,0 +1,54 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+    Your basket
+{% endblock %}
+{% block content %}
+    <h1> Your basket</h1>
+    <table >
+        <thead>
+        <tr>
+            <th></th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit price</th>
+            <th>Price</th>
+            <th>Remove</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+                <tr>
+                    <td>
+                        <a href="{{ product.get_absolute_url }}">
+                            <img width = "200" height = "160" src="
+                                {% if product.image %}
+                                    {{ product.image.url }}
+                                {% else %}
+                                    {% static 'img  /no_image.png' %}
+                                {% endif %}">
+                        </a>
+                    </td>
+                    <td width = "200" height = "160">{{ product.name }}</td>
+                    <td width = "200" height = "160">{{ item.quantity }}</td>
+                    <td width = "200" height = "160">${{ item.price }}</td>
+                    <td width = "200" height = "160">${{ item.total_price }}</td>
+                    <td width = "200" height = "160"><a href="{% url 'shop:cart_remove' product.id%}"  class="js-book-delete-form">Remove</a></td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="total">
+            <td>Total</td>
+            <td colspan="4"></td>
+            <td class="num">${{ cart.get_total_price }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p style="margin-top:-400px;padding-left:1270px;" >
+        <a href="{% url 'shop:product_list' %}" class="btn btn-info btn-lg">Continue shopping</a>
+        <a href="{% url 'shop:order_create' %}" class="btn btn-info btn-lg">
+            Pay
+        </a>
+    </p>
+{% endblock %}
